@@ -1,0 +1,56 @@
+USE TEC;
+--bemærk den giver fejl på min computer fordi jeg allerede har et objekt i min database med elev/lære/klasse_ID
+
+CREATE TABLE Klasse_ID (Klasse_ID INT PRIMARY KEY IDENTITY, --igen samme process
+Lokale VARCHAR (255)UNIQUE, 
+Klasse VARCHAR (255),
+
+);
+
+CREATE TABLE Elev (Elev_ID INT PRIMARY KEY IDENTITY, -- her laver vi en table med de forskellige ting vi skal bruge. Lig mærke til at (NOT NULL) betyder der SKAL være en værdi.
+Navn VARCHAR (255) NOT NULL, -- lavet en string værdi (men vi ''har ikke givet/assignet den en værdi endnu, det gør vi lidt længere nede) 
+Efternavn VARCHAR (255) NOT NULL,
+Adresse VARCHAR (255) NOT NULL,
+Post_nr INT NOT NULL REFERENCES PostNrBy(Postnr), -- lavet en int værdi (men vi ''har ikke givet/assignet den en værdi endnu, det gør vi lidt længere nede)
+Lokale VARCHAR (255)REFERENCES Klasse_ID(Lokale),
+Telefon_NR INT NOT NULL,
+ -- her er der givet en primary key som er der hvor starten er 
+);
+
+CREATE TABLE Lærer (Lærer_ID INT PRIMARY KEY IDENTITY, -- igen samme process 
+navn VARCHAR (255) NOT NULL,
+efternavn VARCHAR (255) NOT NULL,
+Adresse VARCHAR (255) NOT NULL,
+Post_nr INT NOT NULL REFERENCES PostNrBy(Postnr),
+Lokale VARCHAR (255) REFERENCES Klasse_ID(Lokale),
+Telefon_NR INT NOT NULL
+);
+
+INSERT INTO Klasse_ID (Lokale, Klasse) -- og her bliver der givet værdi til klasse lokaler som så er (1, klasse/lokale id 1/2/3, og hvad klasse det er (Klasse 1A Klaase 9B Klasse 4d)
+VALUES ('1A', 'lokale 123'),
+       ('9B', 'lokale 203'),
+	   ('4D', 'lokale 303');
+
+INSERT INTO Elev (Navn, Efternavn, Adresse, Post_nr, Lokale, Telefon_NR) -- her giver vi værdien nedenunder denne sætning til tingene inde i paranteserne som vil sige (første værdi 1 elev_id 2, navn 3, efternavn osv osv)
+VALUES ('Bo', 'Andersen', 'Gammel Byvej', 2650, '1A', 12345678),
+       ('Frederikke', 'Hansen', 'Amager Boulevard', 2300, '1A', 23456789),
+	   ('Jens', 'Mikkelsen', 'Lily Brogbergs Vej', 2500, '4D', 34567890), 
+	   ('Phillip', 'Mortensen', 'Brunevang', 2610, '9B', 45678901), 
+	   ('Kasper', 'Frederiksen', 'Bryggertorvet', 3650, '1A', 56789012), 
+	   ('Milla', 'Jørgensen', 'Virum Torv', 2830, '1A', 67890123), 
+	   ('Fie', 'Kudsen', 'Allen', 2770, '4D', 78901234),
+	   ('Henrik', 'Madsen', 'Lily Brobergs Vej', 2500,'9B', 89012345);
+
+INSERT INTO Lærer (navn, efternavn, Adresse, Post_nr, Lokale, Telefon_NR) -- samme process her for lærene hvor længere oppe var det for elever
+VALUES ('Tom', 'It', 'Sankt Thomas Alleé', 1824, '9B', 00001234),
+       ('Lars', 'Henriksen', 'Nissedalen 76', 2740, '1A', 00002345),
+	   ('Mia', 'Hansen', 'Østervej 16', 2750, '4D', 00003456);
+
+	   select top 2 navn, Adresse
+from Elev
+
+select Adresse, post_nr, navn from Elev
+
+SELECT TOP 3 navn, efternavn, Post_nr, Adresse From  elev
+
+select navn, Adresse, efternavn, Post_nr, lokale from elev
